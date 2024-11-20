@@ -13,7 +13,6 @@ A powerful and interactive playground for experimenting with Large Language Mode
 5. 🔗 API access for all AI features: All tools are open-source and customizable (in progress).
 6. 💡 Powerful development team: Launching 2-3 new applications weekly with daily product updates. Interested developers are welcome to contact us.
 
-
 ## ✨ Key Features ✨
 
 1. **Interactive Chat Interface**
@@ -25,11 +24,18 @@ A powerful and interactive playground for experimenting with Large Language Mode
    - Model configuration and AI parameter tuning
    - Responsive and accessible design
 
+   ![Expert Mode Features](docs/expert_mode_features.png)
+
 2. **Rich Text Editor**
    - Advanced markdown with GitHub Flavored support
    - KaTeX for LaTeX expressions
    - Mermaid for diagram rendering
    - Persistent content and live rendering
+
+   ![Formula Rendering](docs/formula_rendering.png)
+   ![Code Highlighting](docs/code_highlighting.png)
+   ![Mermaid Diagrams](docs/mermaid_diagrams.png)
+   ![Complex Tables](docs/complex_tables.png)
 
 3. **Modern User Experience**
    - Customizable and responsive UI

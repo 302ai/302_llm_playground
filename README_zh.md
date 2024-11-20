@@ -24,11 +24,18 @@
    - 模型配置和 AI 参数调整
    - 响应式和可访问的设计
 
+   ![专家模式功能](docs/expert_mode_features.png)
+
 2. **富文本编辑器**
    - 支持 GitHub 风格的高级 Markdown
    - 支持 LaTeX 表达式的 KaTeX
    - 支持 Mermaid 图表渲染
    - 持久化内容和实时渲染
+
+   ![公式渲染](docs/formula_rendering.png)
+   ![代码高亮](docs/code_highlighting.png)
+   ![Mermaid 图表](docs/mermaid_diagrams.png)
+   ![复杂表格](docs/complex_tables.png)
 
 3. **现代用户体验**
    - 可定制和响应式的 UI

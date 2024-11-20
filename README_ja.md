@@ -24,11 +24,18 @@ Next.js 14と最新のWeb技術を使用して構築された、大規模言語�
    - モデル設定とAIパラメータ調整
    - レスポンシブでアクセス可能なデザイン
 
+   ![エキスパートモード機能](docs/expert_mode_features.png)
+
 2. **リッチテキストエディタ**
    - GitHub Flavoredの高度なMarkdownサポート
    - LaTeX表現のためのKaTeX
    - Mermaidによる図のレンダリング
    - 永続的なコンテンツとライブレンダリング
+
+   ![数式レンダリング](docs/formula_rendering.png)
+   ![コードハイライト](docs/code_highlighting.png)
+   ![Mermaid 図](docs/mermaid_diagrams.png)
+   ![複雑なテーブル](docs/complex_tables.png)
 
 3. **モダンなユーザーエクスペリエンス**
    - カスタマイズ可能でレスポンシブなUI
