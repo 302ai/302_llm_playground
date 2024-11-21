@@ -19,6 +19,7 @@ import { atomWithStorage } from 'jotai/utils'
  * @property {number} frequencyPenalty - Penalty for frequent token use (0-2)
  * @property {number} presencePenalty - Penalty for token presence (0-2)
  * @property {string} apiKey - API key for model access
+ * @property {number} maxTokens - Maximum number of tokens for the model
  * 
  * @example
  * ```typescript
@@ -34,6 +35,7 @@ export const playgroundSettiongsAtom = atomWithStorage('playground-settings', {
   frequencyPenalty: 0.5,
   presencePenalty: 0.5,
   apiKey: '',
+  maxTokens: 8192,
 })
 
 /**

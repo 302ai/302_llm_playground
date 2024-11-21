@@ -80,7 +80,10 @@
       "title": "Settings",
       "topP": "Nucleus sampling",
       "topPDesc": "Nucleus sampling. The value is passed through to the provider. The range depends on the provider and model. It is recommended to set either temperature or topP, but not both.",
-      "languageTooltip": "Select interface language. After changing the language, all interface text will be displayed in the selected language."
+      "languageTooltip": "Select interface language. After changing the language, all interface text will be displayed in the selected language.",
+      "maxTokens": "Max Tokens",
+      "maxTokensDesc": "The maximum number of tokens allowed for model responses. Adjust this setting to control the length of the generated responses.",
+      "maxTokensPlaceholder": "Enter max tokens"
     },
     "settingsTooltip": "Open settings panel",
     "generatingDiagram": "Generating diagram...",

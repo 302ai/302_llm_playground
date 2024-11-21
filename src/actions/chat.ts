@@ -36,6 +36,7 @@ const MAX_TOKENS = 8192
  * @param {number} [params.presencePenalty] - Penalty for token presence
  * @param {number} [params.temperature] - Randomness in response generation
  * @param {number} [params.topP] - Nucleus sampling parameter
+ * @param {number} [params.maxTokens] - Maximum number of tokens for model responses
  * @returns {Promise<{output: ReadableStream}>} Streamable response value
  * 
  * @example
@@ -45,7 +46,8 @@ const MAX_TOKENS = 8192
  *   apiKey: 'your-api-key',
  *   messages: previousMessages,
  *   temperature: 0.7,
- *   topP: 0.9
+ *   topP: 0.9,
+ *   maxTokens: 8192
  * });
  * 
  * for await (const chunk of response.output) {
@@ -62,6 +64,7 @@ export async function chat({
   presencePenalty,
   temperature,
   topP,
+  maxTokens,
 }: {
   model: string
   apiKey: string
@@ -70,6 +73,7 @@ export async function chat({
   presencePenalty?: number
   temperature?: number
   topP?: number
+  maxTokens?: number
 }) {
   logger.info('Starting chat generation', { 
     context: { 
@@ -78,7 +82,8 @@ export async function chat({
       frequencyPenalty,
       presencePenalty,
       temperature,
-      topP
+      topP,
+      maxTokens
     },
     module: 'Chat'
   })
@@ -103,9 +108,10 @@ export async function chat({
           presencePenalty,
           temperature,
           topP,
+          maxTokens,
           // Special configuration for Claude 3.5 model
           ...(model.includes('claude-3-5') && {
-            maxTokens: MAX_TOKENS,
+            maxTokens: maxTokens || MAX_TOKENS,
             headers: {
               'anthropic-beta': 'max-tokens-3-5-sonnet-2024-07-15',
             },

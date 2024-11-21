@@ -110,7 +110,7 @@ const DEFAULT_SETTINGS = {
  * - Drag-and-drop message reordering
  * - Export functionality
  * - Responsive layout with resizable panels
- * 
+ *
  * @component
  * @returns {JSX.Element} The rendered playground interface
  */
@@ -851,6 +851,49 @@ export default function Component() {
                           })
                         }
                       />
+                    </div>
+                    <div>
+                      <div className='flex items-center justify-between'>
+                        <div className='flex items-center gap-1'>
+                          <Label className='text-sm font-medium text-gray-700'>
+                            {t('settings.maxTokens')}
+                          </Label>
+                          <TooltipProvider delayDuration={0}>
+                            <Tooltip>
+                              <TooltipTrigger asChild>
+                                <button
+                                  type='button'
+                                  className='cursor-help'
+                                  onClick={(e) => e.preventDefault()}
+                                >
+                                  <HelpCircle className='h-4 w-4 text-gray-400 hover:text-gray-500' />
+                                </button>
+                              </TooltipTrigger>
+                              <TooltipContent
+                                sideOffset={4}
+                                className='max-w-xs select-text break-words rounded-md bg-gray-900 px-3 py-2 text-sm text-gray-50'
+                              >
+                                <p>{t('settings.maxTokensDesc')}</p>
+                              </TooltipContent>
+                            </Tooltip>
+                          </TooltipProvider>
+                        </div>
+                      </div>
+                      <div className='flex items-center justify-between'>
+                        <Input
+                          type='number'
+                          min={1}
+                          value={settings.maxTokens}
+                          onChange={(e) =>
+                            setSettings({
+                              ...settings,
+                              maxTokens: Number(e.target.value),
+                            })
+                          }
+                          placeholder={t('settings.maxTokensPlaceholder')}
+                          className='mt-2'
+                        />
+                      </div>
                     </div>
                   </div>
                 </SidebarGroupContent>

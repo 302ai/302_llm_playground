@@ -80,7 +80,10 @@
       "title": "设置",
       "topP": "核采样",
       "topPDesc": "核采样。该值直接传递给提供商。取值范围取决于提供商和模型。建议只设置温度或 topP 其中之一，不要同时设置。",
-      "languageTooltip": "选择界面语言。更改语言后，所有界面文本将使用所选语言显示。"
+      "languageTooltip": "选择界面语言。更改语言后，所有界面文本将使用所选语言显示。",
+      "maxTokens": "最大令牌数",
+      "maxTokensDesc": "模型响应允许的最大令牌数。调整此设置以控制生成响应的长度。",
+      "maxTokensPlaceholder": "输入最大令牌数"
     },
     "settingsTooltip": "打开设置面板",
     "generatingDiagram": "正在生成图表...",
