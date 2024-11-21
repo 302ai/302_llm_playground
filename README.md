@@ -4,6 +4,9 @@
 
 A powerful and interactive playground for experimenting with Large Language Models, built with Next.js 14 and modern web technologies.
 
+![302 thumbnail](readme-thumbnail.jpg)
+
+
 ## ✨ About 302.AI ✨
 [302.AI](https://302.ai) is a pay-as-you-go AI application platform, bridging the gap between AI capabilities and practical implementation. 💡✨
 1. 🧠 Comprehensive AI capabilities: Incorporates the latest in language, image, audio, and video models from leading AI brands.
