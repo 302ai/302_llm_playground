@@ -47,12 +47,23 @@ export const playgroundSettiongsAtom = atomWithStorage('playground-settings', {
  * @property {'system' | 'user' | 'assistant'} role - Message sender role
  * @property {string} content - Message content
  * @property {number} [timestamp] - Optional message timestamp
+ * @property {Object[]} [files] - Optional files or images
+ * @property {string} files[].url - File or image URL
+ * @property {'image' | 'file'} files[].type - File or image type
+ * @property {string} files[].name - File or image name
+ * @property {number} files[].size - File or image size
  */
 export type PlaygroundMessage = {
   id: string
   role: 'system' | 'user' | 'assistant'
   content: string
   timestamp?: number
+  files?: {
+    url: string
+    type: 'image' | 'file'
+    name: string
+    size: number
+  }[]
 }
 
 /**

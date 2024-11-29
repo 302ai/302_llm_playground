@@ -42,7 +42,11 @@
       "system": "システム",
       "systemDefaultContent": "あなたは 302 AI アシスタントで、ユーザーの問題を解決するのが得意です。",
       "user": "ユーザー",
-      "viewTooltip": "メッセージを表示"
+      "viewTooltip": "メッセージを表示",
+      "upload_file": "ファイルをアップロード",
+      "upload_error": "ファイルのアップロードに失敗しました",
+      "upload_success": "ファイルが正常にアップロードされました",
+      "uploaded_files": "アップロードされたファイル"
     },
     "regenerateFromHere": "ここから再生成",
     "resetZoom": "ズームをリセットする",

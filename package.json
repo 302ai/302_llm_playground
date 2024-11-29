@@ -59,6 +59,7 @@
     "unist-util-visit": "^5.0.0",
     "usehooks-ts": "^3.1.0",
     "uuid": "^11.0.3",
+    "yet-another-react-lightbox": "^3.21.7",
     "zod": "^3.23.8"
   },
   "devDependencies": {

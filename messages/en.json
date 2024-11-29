@@ -40,7 +40,11 @@
       "system": "System",
       "systemDefaultContent": "You are 302 AI assistant, good at solving user problems.",
       "user": "User",
-      "viewTooltip": "View message"
+      "viewTooltip": "View message",
+      "upload_file": "Upload file",
+      "upload_error": "File upload failed",
+      "upload_success": "File uploaded successfully",
+      "uploaded_files": "Uploaded files"
     },
     "regenerateFromHere": "Regenerate from here",
     "settings": {

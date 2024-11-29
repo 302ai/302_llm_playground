@@ -106,6 +106,7 @@ export function useChatGeneration() {
         id: messageId,
         role: 'assistant',
         content: '',
+        timestamp: Date.now(),
       },
     })
 
@@ -137,6 +138,7 @@ export function useChatGeneration() {
             id: messageId,
             role: 'assistant',
             content: contentRef.current,
+            timestamp: Date.now(),
           },
         }))
       }

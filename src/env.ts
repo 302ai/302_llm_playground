@@ -16,6 +16,7 @@ import { z } from 'zod'
  * @property {Object} server - Server-side environment variables
  * @property {string} server.AI_302_API_KEY - API key for AI 302 service
  * @property {string} server.AI_302_API_URL - Base URL for AI 302 service
+ * @property {string} client.NEXT_PUBLIC_AI_302_API_UPLOAD_URL - Upload URL for AI 302 service
  * @property {Object} client - Client-side environment variables (empty for security)
  */
 export const env = createEnv({
@@ -23,6 +24,10 @@ export const env = createEnv({
     AI_302_API_KEY: z.string().min(1),
     AI_302_API_URL: z.string().min(1),
   },
-  client: {},
-  experimental__runtimeEnv: {},
+  client: {
+    NEXT_PUBLIC_AI_302_API_UPLOAD_URL: z.string().min(1),
+  },
+  experimental__runtimeEnv: {
+    NEXT_PUBLIC_AI_302_API_UPLOAD_URL: process.env.NEXT_PUBLIC_AI_302_API_UPLOAD_URL,
+  },
 })

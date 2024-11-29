@@ -36,6 +36,7 @@ import { Slider } from '@/components/ui/slider'
 import { Textarea } from '@/components/ui/textarea'
 import { messageStore } from '@/db/message-store'
 import { useChatGeneration } from '@/hooks/use-chat-generation'
+import { useFileUpload } from '@/hooks/use-file-upload'
 import { useMessages } from '@/hooks/use-messages'
 
 import { getModels, ModelInfo } from '@/actions/models'
@@ -74,19 +75,22 @@ import {
   ChevronUp,
   FileDown,
   HelpCircle,
+  Loader2,
   PlayCircle,
   Plus,
   RotateCcw,
   Square,
   Trash2,
+  Upload
 } from 'lucide-react'
 import { marked, Tokens } from 'marked'
 import { useTranslations } from 'next-intl'
 import { useParams } from 'next/navigation'
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { toast } from 'sonner'
 import { v4 as uuidv4 } from 'uuid'
 
+import { FilePreview } from '@/components/playground/file-preview'
 import { GLOBAL } from '@/constants/values'
 import { startTransition } from 'react'
 
@@ -157,6 +161,7 @@ export default function Component() {
       ...prev,
       id: uuidv4(),
       content: '',
+      files: [],
     }))
   }
 
@@ -174,6 +179,7 @@ export default function Component() {
       ...prev,
       id: uuidv4(),
       content: '',
+      files: [],
     }))
   }, [t])
 
@@ -343,6 +349,35 @@ export default function Component() {
   const router = useRouter()
   const params = useParams()
   const pathname = '/'
+  
+  const { upload, isUploading } = useFileUpload()
+
+  const handleFileUpload = useCallback(async (files: File[]) => {
+    try {
+      const uploaded = await upload(files)
+      setNewMessage((prev) => ({...prev, files:[...prev.files || [], ...uploaded]}))
+      toast.success(t('message.upload_success'))
+    } catch (error) {
+      console.error('Upload error:', error)
+      toast.error(error instanceof Error ? error.message : t('message.upload_error'))
+    } finally {
+      if (fileInputRef.current) {
+        fileInputRef.current.value = ''
+      }
+    }
+  }, [upload, t])
+
+  const handleDeleteFile = useCallback((index: number) => {
+    setNewMessage((prev) => ({...prev, files: prev.files?.filter((_, i) => i !== index)}))
+  }, [])
+
+  const fileInputRef = useRef<HTMLInputElement>(null)
+
+  const triggerFileUpload = () => {
+    fileInputRef.current?.click()
+  }
+
+  const [isPreviewOpen, setIsPreviewOpen] = useState(false)
 
   return (
     <ClientOnly>
@@ -506,6 +541,110 @@ export default function Component() {
                       </Tooltip>
                     </TooltipProvider>
 
+                    <Tooltip>
+                      <Popover
+                        open={isPreviewOpen}
+                        onOpenChange={setIsPreviewOpen}
+                      >
+                        <TooltipProvider delayDuration={0}>
+                          <TooltipTrigger asChild>
+                            <PopoverTrigger asChild>
+                              <Button
+                                variant='outline'
+                                onClick={(e) => {
+                                  e.preventDefault()
+                                  if (!newMessage.files?.length) {
+                                    triggerFileUpload()
+                                  } else {
+                                    setIsPreviewOpen(true)
+                                  }
+                                }}
+                                disabled={isUploading}
+                                className='relative'
+                                size='icon'
+                              >
+                                {isUploading ? (
+                                  <Loader2 className='size-4 animate-spin' />
+                                ) : (
+                                  <>
+                                    <Upload className='size-4' />
+                                    {newMessage.files &&
+                                      newMessage.files.length > 0 && (
+                                        <span className='absolute -right-1 -top-1 flex h-4 w-4 items-center justify-center rounded-full bg-primary text-[10px] text-primary-foreground'>
+                                          {newMessage.files.length}
+                                        </span>
+                                      )}
+                                  </>
+                                )}
+                              </Button>
+                            </PopoverTrigger>
+                          </TooltipTrigger>
+                          <TooltipContent
+                            sideOffset={4}
+                            className='max-w-xs select-text break-words rounded-md bg-gray-900 px-3 py-2 text-sm text-gray-50'
+                          >
+                            <p>{t('message.upload_file')}</p>
+                          </TooltipContent>
+                        </TooltipProvider>
+                        {newMessage.files && newMessage.files.length > 0 && (
+                          <PopoverContent
+                            className='w-80 p-2'
+                            side='top'
+                            align='end'
+                          >
+                            <div className='mb-2 flex items-center justify-between'>
+                              <span className='text-sm font-medium'>
+                                {t('message.uploaded_files')}
+                              </span>
+                              <TooltipProvider delayDuration={0}>
+                                <Tooltip>
+                                  <TooltipTrigger asChild>
+                                    <Button
+                                      variant='ghost'
+                                      size='icon'
+                                      className='h-8 w-8'
+                                      onClick={() => {
+                                        setIsPreviewOpen(false)
+                                        triggerFileUpload()
+                                      }}
+                                    >
+                                      <Plus className='h-4 w-4' />
+                                    </Button>
+                                  </TooltipTrigger>
+                                  <TooltipContent
+                                    sideOffset={4}
+                                    className='max-w-xs select-text break-words rounded-md bg-gray-900 px-3 py-2 text-sm text-gray-50'
+                                  >
+                                    <p>{t('message.upload_file')}</p>
+                                  </TooltipContent>
+                                </Tooltip>
+                              </TooltipProvider>
+                            </div>
+                            <FilePreview
+                              files={newMessage.files}
+                              canDelete={true}
+                              onDelete={handleDeleteFile}
+                            />
+                          </PopoverContent>
+                        )}
+                      </Popover>
+                    </Tooltip>
+
+                    <input
+                      ref={fileInputRef}
+                      type='file'
+                      multiple
+                      className='hidden'
+                      onChange={(e) => {
+                        const files = Array.from(e.target.files || [])
+                        if (files.length) {
+                          handleFileUpload(files)
+                        }
+                        e.target.value = ''
+                      }}
+                      accept='image/*,.pdf,.doc,.docx,.txt'
+                    />
+
                     {uiMode === 'expert' && (
                       <TooltipProvider delayDuration={0}>
                         <Tooltip>
@@ -566,6 +705,7 @@ export default function Component() {
                     </TooltipProvider>
                   </div>
                 </div>
+
                 <Textarea
                   className='flex-1 resize-none rounded-lg border-0 px-0 shadow-none focus-visible:ring-0'
                   placeholder={t('message.inputPlaceholder')}

@@ -21,6 +21,8 @@ import {
 } from '@/components/ui/tooltip'
 import { messageStore } from '@/db/message-store'
 import { useCopyToClipboard } from '@/hooks/use-copy-to-clipboard'
+import { useFileUpload } from '@/hooks/use-file-upload'
+import { useMessages } from '@/hooks/use-messages'
 import { PlaygroundMessage, uiModeAtom } from '@/stores/playground'
 import { cn } from '@/utils/tailwindcss'
 import { useSortable } from '@dnd-kit/sortable'
@@ -32,13 +34,16 @@ import {
   Edit2,
   Eye,
   GripVertical,
+  ImagePlus,
   Loader2,
   RefreshCw,
   Trash2,
 } from 'lucide-react'
 import { useTranslations } from 'next-intl'
-import { memo, useCallback, useEffect, useState } from 'react'
+import { memo, useCallback, useEffect, useRef, useState } from 'react'
+import { toast } from 'sonner'
 import { useDebounceCallback } from 'usehooks-ts'
+import { FilePreview } from './file-preview'
 import { MarkdownEditor } from './markdown-editor'
 
 /**
@@ -140,6 +145,26 @@ export const SortableMessage = memo(
       [message]
     )
 
+    const { handleEdit } = useMessages()
+
+    const handleFileDelete = useCallback(
+      async (index: number) => {
+        try {
+          await messageStore.editMessage(message.id!, {
+            ...message,
+            files: message.files?.filter((_, i) => i !== index),
+          })
+          handleEdit(message.id!, {
+            ...message,
+            files: message.files?.filter((_, i) => i !== index),
+          })
+        } catch (error) {
+          console.error('Failed to delete file:', error)
+        }
+      },
+      [message, handleEdit]
+    )
+
     const [currentRole, setCurrentRole] = useState(message.role)
 
     useEffect(() => {
@@ -158,6 +183,35 @@ export const SortableMessage = memo(
     )
 
     const [uiMode] = useAtom(uiModeAtom)
+
+    const { upload, isUploading } = useFileUpload()
+    const fileInputRef = useRef<HTMLInputElement>(null)
+
+    const handleFileUpload = useCallback(
+      async (event: React.ChangeEvent<HTMLInputElement>) => {
+        const files = Array.from(event.target.files || [])
+        if (!files.length) return
+
+        try {
+          const uploadedFiles = await upload(files)
+          const newFiles = [...(message.files || []), ...uploadedFiles]
+          
+          handleEdit(message.id!, {
+            ...message,
+            files: newFiles,
+          })
+          toast.success(t('message.upload_success'))
+        } catch (error) {
+          console.error('Failed to upload files:', error)
+          toast.error(t('message.upload_error'))
+        } finally {
+          if (fileInputRef.current) {
+            fileInputRef.current.value = ''
+          }
+        }
+      },
+      [message, upload, handleEdit, t]
+    )
 
     return (
       <div
@@ -338,11 +392,57 @@ export const SortableMessage = memo(
           {isRunning && message.content.length === 0 ? (
             <LoadingIndicator />
           ) : (
-            <MarkdownEditor
-              content={content}
-              isEditing={isEditing}
-              onChange={handleMessageEdit}
-            />
+            <div className='flex flex-col flex-1'>
+              <MarkdownEditor
+                content={content}
+                isEditing={isEditing}
+                onChange={handleMessageEdit}
+              />
+              <div className='flex items-center gap-2'>
+                {message.files && (
+                  <FilePreview
+                    files={message.files}
+                    canDelete={isEditing}
+                    onDelete={handleFileDelete}
+                    className="flex-1"
+                  />
+                )}
+                {isEditing && (
+                  <>
+                    <input
+                      ref={fileInputRef}
+                      type="file"
+                      multiple
+                      className="hidden"
+                      onChange={handleFileUpload}
+                      accept="image/*,.pdf,.doc,.docx,.txt,.md"
+                    />
+                    <TooltipProvider delayDuration={0}>
+                      <Tooltip>
+                        <TooltipTrigger asChild>
+                          <Button
+                            variant="outline"
+                            size="icon"
+                            className="shrink-0"
+                            onClick={() => fileInputRef.current?.click()}
+                            disabled={isUploading}
+                          >
+                            {isUploading ? (
+                              <Loader2 className="h-4 w-4 animate-spin" />
+                            ) : (
+                              <ImagePlus className="h-4 w-4" />
+                            )}
+                          </Button>
+                        </TooltipTrigger>
+                        <TooltipContent>
+                          <p>{t('message.upload_file')}</p>
+                        </TooltipContent>
+                      </Tooltip>
+                    </TooltipProvider>
+                  </>
+                )}
+              </div>
+            </div>
           )}
         </div>
       </div>
@@ -353,6 +453,7 @@ export const SortableMessage = memo(
       prevProps.message.id === nextProps.message.id &&
       prevProps.message.content === nextProps.message.content &&
       prevProps.message.role === nextProps.message.role &&
+      prevProps.message.files === nextProps.message.files &&
       prevProps.isRunning === nextProps.isRunning
     )
   }

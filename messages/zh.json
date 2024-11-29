@@ -40,7 +40,11 @@
       "system": "系统",
       "systemDefaultContent": "你是302 AI助手，擅长解决用户问题。",
       "user": "用户",
-      "viewTooltip": "查看消息"
+      "viewTooltip": "查看消息",
+      "upload_file": "上传文件",
+      "uploaded_files": "已上传的文件",
+      "upload_success": "文件上传成功",
+      "upload_error": "文件上传失败"
     },
     "regenerateFromHere": "从此处重新生成",
     "settings": {

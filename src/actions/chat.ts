@@ -11,7 +11,7 @@ import { PlaygroundMessage } from '@/stores/playground'
 import { normalizeUrl } from '@/utils/api'
 import { logger } from '@/utils/logger'
 import { createOpenAI } from '@ai-sdk/openai'
-import { streamText } from 'ai'
+import { CoreMessage, streamText } from 'ai'
 import { createStreamableValue } from 'ai/rsc'
 
 /**
@@ -75,10 +75,43 @@ export async function chat({
   topP?: number
   maxTokens?: number
 }) {
-  logger.info('Starting chat generation', { 
+
+  const formattedMessages = messages.map((msg) => {
+    if (!msg.files || !msg.files.length) {
+      return {
+        role: msg.role,
+        content: msg.content,
+      }
+    }
+
+    const parts = []
+    if (msg.content) {
+      parts.push({
+        type: 'text' as const,
+        text: msg.content,
+      })
+    }
+
+    if (msg.files?.length) {
+      parts.push(
+        ...msg.files.map((file) => ({
+          type: file.type,
+          [file.type]: file.url
+        }))
+      )
+    }
+
+    return {
+      role: msg.role,
+      content: parts,
+    }
+  })
+  logger.info('Starting chat generation', {
     context: { 
       model,
       messagesCount: messages.length,
+      messages,
+      formattedMessages,
       frequencyPenalty,
       presencePenalty,
       temperature,
@@ -87,15 +120,15 @@ export async function chat({
     },
     module: 'Chat'
   })
-  
+
   // Create a streamable value for real-time updates
   const stream = createStreamableValue('')
   try {
     // Initialize OpenAI client with custom base URL
-    const openai = createOpenAI({
+  const openai = createOpenAI({
       apiKey: apiKey,
       baseURL: normalizeUrl(env.AI_302_API_URL) + '/v1',
-    })
+  })
 
     // Start asynchronous streaming process
     ;(async () => {
@@ -103,7 +136,7 @@ export async function chat({
         logger.debug('Initiating stream text request', { module: 'Chat' })
         const { textStream } = await streamText({
           model: openai(model),
-          messages,
+          messages: formattedMessages as CoreMessage[],
           frequencyPenalty,
           presencePenalty,
           temperature,
