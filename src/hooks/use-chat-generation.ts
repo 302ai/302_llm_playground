@@ -111,6 +111,7 @@ export function useChatGeneration() {
     })
 
     try {
+      logger.info('Generating chat', { context: { settings }, module: 'ChatGeneration' })
       const { output } = await chat({
         ...settings,
         messages,

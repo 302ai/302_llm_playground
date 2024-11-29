@@ -13,6 +13,7 @@ import { logger } from '@/utils/logger'
 import { createOpenAI } from '@ai-sdk/openai'
 import { CoreMessage, streamText } from 'ai'
 import { createStreamableValue } from 'ai/rsc'
+import ky from 'ky'
 
 /**
  * Maximum number of tokens allowed for model responses.
@@ -22,10 +23,17 @@ import { createStreamableValue } from 'ai/rsc'
  */
 const MAX_TOKENS = 8192
 
+class ChatError extends Error {
+  constructor(message: string, options?: { cause: any }) {
+    super(message, options)
+    this.name = 'ChatError'
+  }
+}
+
 /**
  * Server action that generates chat responses using AI models.
  * Supports streaming responses and various model parameters for fine-tuning output.
- * 
+ *
  * @async
  * @function
  * @param {Object} params - Chat generation parameters
@@ -38,7 +46,7 @@ const MAX_TOKENS = 8192
  * @param {number} [params.topP] - Nucleus sampling parameter
  * @param {number} [params.maxTokens] - Maximum number of tokens for model responses
  * @returns {Promise<{output: ReadableStream}>} Streamable response value
- * 
+ *
  * @example
  * ```typescript
  * const response = await chat({
@@ -49,7 +57,7 @@ const MAX_TOKENS = 8192
  *   topP: 0.9,
  *   maxTokens: 8192
  * });
- * 
+ *
  * for await (const chunk of response.output) {
  *   // Process streaming response
  *   console.log(chunk);
@@ -75,7 +83,6 @@ export async function chat({
   topP?: number
   maxTokens?: number
 }) {
-
   const formattedMessages = messages.map((msg) => {
     if (!msg.files || !msg.files.length) {
       return {
@@ -96,7 +103,7 @@ export async function chat({
       parts.push(
         ...msg.files.map((file) => ({
           type: file.type,
-          [file.type]: file.url
+          [file.type]: file.url,
         }))
       )
     }
@@ -107,7 +114,7 @@ export async function chat({
     }
   })
   logger.info('Starting chat generation', {
-    context: { 
+    context: {
       model,
       messagesCount: messages.length,
       messages,
@@ -116,25 +123,77 @@ export async function chat({
       presencePenalty,
       temperature,
       topP,
-      maxTokens
+      maxTokens,
     },
-    module: 'Chat'
+    module: 'Chat',
   })
 
   // Create a streamable value for real-time updates
   const stream = createStreamableValue('')
   try {
     // Initialize OpenAI client with custom base URL
-  const openai = createOpenAI({
+    const openai = createOpenAI({
       apiKey: apiKey,
       baseURL: normalizeUrl(env.AI_302_API_URL) + '/v1',
-  })
+      fetch: async (input: RequestInfo | URL, init?: RequestInit) => {
+        const url = input instanceof URL ? input : new URL(input.toString())
+
+        try {
+          const response = await ky(url, {
+            ...init,
+            retry: 0,
+            timeout: 30000,
+            hooks: {
+              beforeRequest: [
+                (request) => {
+                  logger.debug('OpenAI API Request', {
+                    context: {
+                      url: request.url,
+                      method: request.method,
+                      headers: Object.fromEntries(request.headers.entries()),
+                    },
+                    module: 'Chat',
+                  })
+                },
+              ],
+              afterResponse: [
+                async (_input, _options, response) => {
+                  logger.debug('OpenAI API Response', {
+                    context: {
+                      status: response.status,
+                      statusText: response.statusText,
+                      headers: Object.fromEntries(response.headers.entries()),
+                    },
+                    module: 'Chat',
+                  })
+                  return response
+                },
+              ],
+            },
+          })
+
+          return response
+        } catch (error) {
+          logger.error('OpenAI API Request Failed', error as Error, {
+            context: { url: url.toString() },
+            module: 'Chat',
+          })
+          // stream.error({
+          //   message: 'OpenAI API Request Failed',
+          // })
+          throw new ChatError('OpenAI API Request Failed', {
+            cause: error,
+          })
+        }
+      },
+    })
 
     // Start asynchronous streaming process
     ;(async () => {
       try {
         logger.debug('Initiating stream text request', { module: 'Chat' })
         const { textStream } = await streamText({
+          maxRetries: 0,
           model: openai(model),
           messages: formattedMessages as CoreMessage[],
           frequencyPenalty,
@@ -151,23 +210,36 @@ export async function chat({
           }),
         })
 
-        // Process and forward each chunk of the response
-        for await (const delta of textStream) {
-          stream.update(delta)
+        // 处理流数据
+        for await (const chunk of textStream) {
+          stream.update(chunk)
         }
 
         logger.info('Chat stream completed successfully', { module: 'Chat' })
         stream.done()
       } catch (e: any) {
-        logger.error('Error in stream text processing', e, { 
-          context: { responseBody: e.responseBody },
-          module: 'Chat'
-        })
-        stream.error(e.responseBody)
+        if (e instanceof ChatError) {
+          logger.error('Error in stream text processing', e, {
+            context: { responseBody: e.cause },
+            module: 'Chat',
+          })
+          stream.error({
+            message: e.message,
+          })
+        } else {
+          logger.error('Error in stream text processing', e, {
+            module: 'Chat',
+          })
+          stream.error({
+            message: 'Unknown error',
+          })
+        }
       }
     })()
   } catch (error) {
-    logger.error('Error in chat initialization', error as Error, { module: 'Chat' })
+    logger.error('Error in chat initialization', error as Error, {
+      module: 'Chat',
+    })
   }
 
   return { output: stream.value }
