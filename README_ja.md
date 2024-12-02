@@ -90,8 +90,9 @@ src/
 
 1. リポジトリをクローン：
    ```bash
-   git clone <repository-url>
-   cd llm_playground
+   git clone https://github.com/302ai/302_llm_playground
+   cd 302_LLM_playground
+
    ```
    
 2. 依存関係をインストール：
