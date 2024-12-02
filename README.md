@@ -90,8 +90,8 @@ src/
 
 1. Clone the repository:
    ```bash
-   git clone <repository-url>
-   cd llm_playground
+   git clone https://github.com/302ai/302_llm_playground
+   cd 302_LLM_playground
    ```
    
 2. Install dependencies:
