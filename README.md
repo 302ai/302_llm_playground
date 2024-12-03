@@ -1,20 +1,15 @@
-# 🤖 Welcome to 302.AI's LLM Playground! 🚀✨
+# <p align="center">🤖 LLM Playground 🚀✨</p>
 
-[中文](README_zh.md) | [English](README.md) | [日本語](README_ja.md)
+<p align="center">A powerful and interactive experimental platform for experimenting with large language models, built based on Next.js 14 and modern web technologies.</p>
 
-A powerful and interactive playground for experimenting with Large Language Models, built with Next.js 14 and modern web technologies.
+<p align="center"><a href="https://302.ai/tools/word/" target="blank"><img src="https://file.302ai.cn/gpt/imgs/badge/21212.png" /></a></p >
+
+<p align="center"><a href="README zh.md">中文</a> | <a href="README.md">English</a> | <a href="README_ja.md">日本語</a></p>
+
+
 
 ![302 thumbnail](readme-thumbnail.jpg)
 
-
-## ✨ About 302.AI ✨
-[302.AI](https://302.ai) is a pay-as-you-go AI application platform, bridging the gap between AI capabilities and practical implementation. 💡✨
-1. 🧠 Comprehensive AI capabilities: Incorporates the latest in language, image, audio, and video models from leading AI brands.
-2. 🚀 Advanced application development: We build genuine AI products, not just simple chatbots.
-3. 💰 No monthly fees: All features are pay-per-use, fully accessible, ensuring low entry barriers with high potential.
-4. 🛠️ Powerful admin dashboard: Designed for teams and SMEs - managed by one, used by many.
-5. 🔗 API access for all AI features: All tools are open-source and customizable (in progress).
-6. 💡 Powerful development team: Launching 2-3 new applications weekly with daily product updates. Interested developers are welcome to contact us.
 
 ## ✨ Key Features ✨
 
@@ -144,3 +139,12 @@ This project is licensed under the GNU Affero General Public License v3.0. See t
 ---
 
 Built with ❤️ using Next.js and 302.AI
+
+## ✨ About 302.AI ✨
+[302.AI](https://302.ai) is a pay-as-you-go AI application platform, bridging the gap between AI capabilities and practical implementation. 💡✨
+1. 🧠 Comprehensive AI capabilities: Incorporates the latest in language, image, audio, and video models from leading AI brands.
+2. 🚀 Advanced application development: We build genuine AI products, not just simple chatbots.
+3. 💰 No monthly fees: All features are pay-per-use, fully accessible, ensuring low entry barriers with high potential.
+4. 🛠️ Powerful admin dashboard: Designed for teams and SMEs - managed by one, used by many.
+5. 🔗 API access for all AI features: All tools are open-source and customizable (in progress).
+6. 💡 Powerful development team: Launching 2-3 new applications weekly with daily product updates. Interested developers are welcome to contact us.
