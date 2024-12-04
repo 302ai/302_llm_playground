@@ -8,7 +8,8 @@
 
 
 
-![302 thumbnail](readme-thumbnail.jpg)
+![界面预览](docs/302-LLM-游乐场en.png)
+
 
 
 ## ✨ Key Features ✨
