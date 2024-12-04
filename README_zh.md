@@ -6,7 +6,7 @@
 
 <p align="center"><a href="README zh.md">中文</a> | <a href="README.md">English</a> | <a href="README_ja.md">日本語</a></p>
 
-
+![界面预览](docs/302-LLM-游乐场.png) 
 ![302 thumbnail](readme-thumbnail.jpg)
 
 ## ✨ 主要功能 ✨
