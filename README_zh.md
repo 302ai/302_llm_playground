@@ -1,20 +1,12 @@
-# 🤖 欢迎来到 302.AI 的 LLM Playground！🚀✨
+# <p align="center">🤖 LLM Playground🚀✨</p>
 
-[中文](README_zh.md) | [English](README.md) | [日本語](README_ja.md)
+<p align="center">一个强大且互动的实验平台，用于实验大型语言模型，基于 Next.js 14 和现代 Web 技术构建。</p>
 
-一个强大且互动的实验平台，用于实验大型语言模型，基于 Next.js 14 和现代 Web 技术构建。
+<p align="center"><a href="https://302.ai/tools/word/" target="blank"><img src="https://file.302ai.cn/gpt/imgs/github/302_badge.png" /></a></p >
 
-![302 thumbnail](readme-thumbnail.jpg)
+<p align="center"><a href="README zh.md">中文</a> | <a href="README.md">English</a> | <a href="README_ja.md">日本語</a></p>
 
-
-## ✨ 302.AI介绍 ✨
-[302.AI](https://302.ai)是一个按需付费的AI应用平台，为用户解决AI用于实践的最后一公里问题。
-1. 🧠 集合了最新最全的AI能力和品牌，包括但不限于语言模型、图像模型、声音模型、视频模型。
-2. 🚀 在基础模型上进行深度应用开发，我们开发真正的AI产品，而不是简单的对话机器人
-3. 💰 零月费，所有功能按需付费，全面开放，做到真正的门槛低，上限高。
-4. 🛠 功能强大的管理后台，面向团队和中小企业，一人管理，多人使用。
-5. 🔗 所有AI能力均提供API接入，所有工具开源可自行定制（进行中）。
-6. 💡 强大的开发团队，每周推出2-3个新应用，产品每日更新。有兴趣加入的开发者也欢迎联系我们
+![界面预览](docs/302-LLM-游乐场.png) 
 
 ## ✨ 主要功能 ✨
 
@@ -90,8 +82,8 @@ src/
 
 1. 克隆仓库：
    ```bash
-   git clone <repository-url>
-   cd llm_playground
+   git clone https://github.com/302ai/302_llm_playground
+   cd 302_LLM_playground
    ```
    
 2. 安装依赖：
@@ -144,3 +136,12 @@ docker run -p 3000:3000 llm-playground
 ---
 
 使用 Next.js 和 302.AI 构建 ❤️
+
+## ✨ 302.AI介绍 ✨
+[302.AI](https://302.ai)是一个按需付费的AI应用平台，为用户解决AI用于实践的最后一公里问题。
+1. 🧠 集合了最新最全的AI能力和品牌，包括但不限于语言模型、图像模型、声音模型、视频模型。
+2. 🚀 在基础模型上进行深度应用开发，我们开发真正的AI产品，而不是简单的对话机器人
+3. 💰 零月费，所有功能按需付费，全面开放，做到真正的门槛低，上限高。
+4. 🛠 功能强大的管理后台，面向团队和中小企业，一人管理，多人使用。
+5. 🔗 所有AI能力均提供API接入，所有工具开源可自行定制（进行中）。
+6. 💡 强大的开发团队，每周推出2-3个新应用，产品每日更新。有兴趣加入的开发者也欢迎联系我们
