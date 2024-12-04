@@ -21,7 +21,7 @@
 
    ![专家模式功能](docs/expert_mode_features.png)
 
-2. **富文本编辑器**
+2. **丰富文本编辑器**
    - 支持 GitHub 风格的高级 Markdown
    - 支持 LaTeX 表达式的 KaTeX
    - 支持 Mermaid 图表渲染
