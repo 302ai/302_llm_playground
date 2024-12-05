@@ -130,7 +130,7 @@ Build and run using Docker:
 
 ```bash
 docker build -t 302_llm_playground .
-docker run -p 3000:3000 llm-playground
+docker run -p 3000:3000 302_llm_playground
 ```
 
 ## Contributing 🤝
