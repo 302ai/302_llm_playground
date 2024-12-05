@@ -9,14 +9,14 @@
 ![界面预览](docs/302-LLM-游乐场.png) 
 
 ## 界面预览
+   根据用户输入生成结果，支持Latex表达式渲染。
+   ![](docs/LLM1.png)     
 
+   可上传图片作为上下文进行对话。
+   ![](docs/LLM2.png)     
 
-
-   ![专家模式功能](docs/expert_mode_features.png)
-   ![公式渲染](docs/formula_rendering.png)
-   ![代码高亮](docs/code_highlighting.png)
-   ![Mermaid 图表](docs/mermaid_diagrams.png)
-   ![复杂表格](docs/complex_tables.png)
+   支持图表渲染。
+   ![](docs/LLM3.png)
    
 ## ✨ 主要功能 ✨
 
