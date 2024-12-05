@@ -127,8 +127,8 @@ pnpm start
 使用 Docker 构建和运行：
 
 ```bash
-docker build -t 302_llm_playground .
-docker run -p 3000:3000 302_llm_playground
+docker build -t llm_playground .
+docker run -p 3000:3000 llm_playground
 ```
 
 ## 贡献 🤝
