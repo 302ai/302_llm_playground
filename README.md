@@ -10,6 +10,15 @@
 
 ![界面预览](docs/302-LLM-游乐场en.png)
 
+## Interface Preview 
+   Generate results based on user input, supporting Latex expression rendering.
+   ![Expert Mode Features](docs/LLM英1.png)    
+
+   Images can be uploaded as context for dialogue.
+   ![Expert Mode Features](docs/LLM英2.png)    
+
+   Support chart rendering.
+   ![Expert Mode Features](docs/LLM英3.png)
 
 
 ## ✨ Key Features ✨
@@ -17,13 +26,12 @@
 1. **Interactive Chat Interface**
    - Real-time markdown editing and preview
    - Role-based conversations
+   - Users can upload images for conversation.
    - Advanced message manipulation: reorder, copy, regenerate
    - Expert Mode: enhanced editing and role controls
    - Feedback and animations for seamless UX
    - Model configuration and AI parameter tuning
    - Responsive and accessible design
-
-   ![Expert Mode Features](docs/expert_mode_features.png)
 
 2. **Rich Text Editor**
    - Advanced markdown with GitHub Flavored support
@@ -31,10 +39,6 @@
    - Mermaid for diagram rendering
    - Persistent content and live rendering
 
-   ![Formula Rendering](docs/formula_rendering.png)
-   ![Code Highlighting](docs/code_highlighting.png)
-   ![Mermaid Diagrams](docs/mermaid_diagrams.png)
-   ![Complex Tables](docs/complex_tables.png)
 
 3. **Modern User Experience**
    - Customizable and responsive UI
