@@ -89,7 +89,7 @@ src/
 1. 克隆仓库：
    ```bash
    git clone https://github.com/302ai/302_llm_playground
-   cd 302_LLM_playground
+   cd 302_llm_playground
    ```
    
 2. 安装依赖：
@@ -127,7 +127,7 @@ pnpm start
 使用 Docker 构建和运行：
 
 ```bash
-docker build -t llm-playground .
+docker build -t 302_llm_playground .
 docker run -p 3000:3000 llm-playground
 ```
 
