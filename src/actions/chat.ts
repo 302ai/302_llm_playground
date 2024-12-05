@@ -142,7 +142,7 @@ export async function chat({
           const response = await ky(url, {
             ...init,
             retry: 0,
-            timeout: 30000,
+            timeout: false,
             hooks: {
               beforeRequest: [
                 (request) => {

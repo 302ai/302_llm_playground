@@ -398,9 +398,10 @@ export const SortableMessage = memo(
                 isEditing={isEditing}
                 onChange={handleMessageEdit}
               />
-              <div className='flex items-center gap-2'>
-                {message.files && (
-                  <FilePreview
+              {message.role === 'user' && (
+                <div className='flex items-center gap-2'>
+                  {message.files && (
+                    <FilePreview
                     files={message.files}
                     canDelete={isEditing}
                     onDelete={handleFileDelete}
@@ -440,8 +441,9 @@ export const SortableMessage = memo(
                       </Tooltip>
                     </TooltipProvider>
                   </>
-                )}
-              </div>
+                  )}
+                </div>
+              )}
             </div>
           )}
         </div>

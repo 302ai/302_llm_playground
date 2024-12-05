@@ -154,6 +154,7 @@ export default function Component() {
       ...(uiMode === 'expert'
         ? { role: message.role as PlaygroundMessage['role'] }
         : { role: 'user' as PlaygroundMessage['role'] }),
+        files: message.role === 'user' ? message.files : undefined,
     }
 
     await messageStore.addMessage(newMsg)
@@ -352,23 +353,34 @@ export default function Component() {
   
   const { upload, isUploading } = useFileUpload()
 
-  const handleFileUpload = useCallback(async (files: File[]) => {
-    try {
-      const uploaded = await upload(files)
-      setNewMessage((prev) => ({...prev, files:[...prev.files || [], ...uploaded]}))
-      toast.success(t('message.upload_success'))
-    } catch (error) {
-      console.error('Upload error:', error)
-      toast.error(error instanceof Error ? error.message : t('message.upload_error'))
-    } finally {
-      if (fileInputRef.current) {
-        fileInputRef.current.value = ''
+  const handleFileUpload = useCallback(
+    async (files: File[]) => {
+      try {
+        const uploaded = await upload(files)
+        setNewMessage((prev) => ({
+          ...prev,
+          files: [...(prev.files || []), ...uploaded],
+        }))
+        toast.success(t('message.upload_success'))
+      } catch (error) {
+        console.error('Upload error:', error)
+        toast.error(
+          error instanceof Error ? error.message : t('message.upload_error')
+        )
+      } finally {
+        if (fileInputRef.current) {
+          fileInputRef.current.value = ''
+        }
       }
-    }
-  }, [upload, t])
+    },
+    [upload, t]
+  )
 
   const handleDeleteFile = useCallback((index: number) => {
-    setNewMessage((prev) => ({...prev, files: prev.files?.filter((_, i) => i !== index)}))
+    setNewMessage((prev) => ({
+      ...prev,
+      files: prev.files?.filter((_, i) => i !== index),
+    }))
   }, [])
 
   const fileInputRef = useRef<HTMLInputElement>(null)
@@ -541,94 +553,96 @@ export default function Component() {
                       </Tooltip>
                     </TooltipProvider>
 
-                    <Tooltip>
-                      <Popover
-                        open={isPreviewOpen}
-                        onOpenChange={setIsPreviewOpen}
-                      >
-                        <TooltipProvider delayDuration={0}>
-                          <TooltipTrigger asChild>
-                            <PopoverTrigger asChild>
-                              <Button
-                                variant='outline'
-                                onClick={(e) => {
-                                  e.preventDefault()
-                                  if (!newMessage.files?.length) {
-                                    triggerFileUpload()
-                                  } else {
-                                    setIsPreviewOpen(true)
-                                  }
-                                }}
-                                disabled={isUploading}
-                                className='relative'
-                                size='icon'
-                              >
-                                {isUploading ? (
-                                  <Loader2 className='size-4 animate-spin' />
-                                ) : (
-                                  <>
-                                    <Upload className='size-4' />
-                                    {newMessage.files &&
-                                      newMessage.files.length > 0 && (
-                                        <span className='absolute -right-1 -top-1 flex h-4 w-4 items-center justify-center rounded-full bg-primary text-[10px] text-primary-foreground'>
-                                          {newMessage.files.length}
-                                        </span>
-                                      )}
-                                  </>
-                                )}
-                              </Button>
-                            </PopoverTrigger>
-                          </TooltipTrigger>
-                          <TooltipContent
-                            sideOffset={4}
-                            className='max-w-xs select-text break-words rounded-md bg-gray-900 px-3 py-2 text-sm text-gray-50'
-                          >
-                            <p>{t('message.upload_file')}</p>
-                          </TooltipContent>
-                        </TooltipProvider>
-                        {newMessage.files && newMessage.files.length > 0 && (
-                          <PopoverContent
-                            className='w-80 p-2'
-                            side='top'
-                            align='end'
-                          >
-                            <div className='mb-2 flex items-center justify-between'>
-                              <span className='text-sm font-medium'>
-                                {t('message.uploaded_files')}
-                              </span>
-                              <TooltipProvider delayDuration={0}>
-                                <Tooltip>
-                                  <TooltipTrigger asChild>
-                                    <Button
-                                      variant='ghost'
-                                      size='icon'
-                                      className='h-8 w-8'
-                                      onClick={() => {
-                                        setIsPreviewOpen(false)
-                                        triggerFileUpload()
-                                      }}
+                    {newMessage.role === 'user' && (
+                      <Tooltip>
+                        <Popover
+                          open={isPreviewOpen}
+                          onOpenChange={setIsPreviewOpen}
+                        >
+                          <TooltipProvider delayDuration={0}>
+                            <TooltipTrigger asChild>
+                              <PopoverTrigger asChild>
+                                <Button
+                                  variant='outline'
+                                  onClick={(e) => {
+                                    e.preventDefault()
+                                    if (!newMessage.files?.length) {
+                                      triggerFileUpload()
+                                    } else {
+                                      setIsPreviewOpen(true)
+                                    }
+                                  }}
+                                  disabled={isUploading}
+                                  className='relative'
+                                  size='icon'
+                                >
+                                  {isUploading ? (
+                                    <Loader2 className='size-4 animate-spin' />
+                                  ) : (
+                                    <>
+                                      <Upload className='size-4' />
+                                      {newMessage.files &&
+                                        newMessage.files.length > 0 && (
+                                          <span className='absolute -right-1 -top-1 flex h-4 w-4 items-center justify-center rounded-full bg-primary text-[10px] text-primary-foreground'>
+                                            {newMessage.files.length}
+                                          </span>
+                                        )}
+                                    </>
+                                  )}
+                                </Button>
+                              </PopoverTrigger>
+                            </TooltipTrigger>
+                            <TooltipContent
+                              sideOffset={4}
+                              className='max-w-xs select-text break-words rounded-md bg-gray-900 px-3 py-2 text-sm text-gray-50'
+                            >
+                              <p>{t('message.upload_file')}</p>
+                            </TooltipContent>
+                          </TooltipProvider>
+                          {newMessage.files && newMessage.files.length > 0 && (
+                            <PopoverContent
+                              className='w-80 p-2'
+                              side='top'
+                              align='end'
+                            >
+                              <div className='mb-2 flex items-center justify-between'>
+                                <span className='text-sm font-medium'>
+                                  {t('message.uploaded_files')}
+                                </span>
+                                <TooltipProvider delayDuration={0}>
+                                  <Tooltip>
+                                    <TooltipTrigger asChild>
+                                      <Button
+                                        variant='ghost'
+                                        size='icon'
+                                        className='h-8 w-8'
+                                        onClick={() => {
+                                          setIsPreviewOpen(false)
+                                          triggerFileUpload()
+                                        }}
+                                      >
+                                        <Plus className='h-4 w-4' />
+                                      </Button>
+                                    </TooltipTrigger>
+                                    <TooltipContent
+                                      sideOffset={4}
+                                      className='max-w-xs select-text break-words rounded-md bg-gray-900 px-3 py-2 text-sm text-gray-50'
                                     >
-                                      <Plus className='h-4 w-4' />
-                                    </Button>
-                                  </TooltipTrigger>
-                                  <TooltipContent
-                                    sideOffset={4}
-                                    className='max-w-xs select-text break-words rounded-md bg-gray-900 px-3 py-2 text-sm text-gray-50'
-                                  >
-                                    <p>{t('message.upload_file')}</p>
-                                  </TooltipContent>
-                                </Tooltip>
-                              </TooltipProvider>
-                            </div>
-                            <FilePreview
-                              files={newMessage.files}
-                              canDelete={true}
-                              onDelete={handleDeleteFile}
-                            />
-                          </PopoverContent>
-                        )}
-                      </Popover>
-                    </Tooltip>
+                                      <p>{t('message.upload_file')}</p>
+                                    </TooltipContent>
+                                  </Tooltip>
+                                </TooltipProvider>
+                              </div>
+                              <FilePreview
+                                files={newMessage.files}
+                                canDelete={true}
+                                onDelete={handleDeleteFile}
+                              />
+                            </PopoverContent>
+                          )}
+                        </Popover>
+                      </Tooltip>
+                    )}
 
                     <input
                       ref={fileInputRef}
