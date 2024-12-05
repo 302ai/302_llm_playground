@@ -416,7 +416,7 @@ export const SortableMessage = memo(
                       multiple
                       className="hidden"
                       onChange={handleFileUpload}
-                      accept="image/*,.pdf,.doc,.docx,.txt,.md"
+                      accept="image/*"
                     />
                     <TooltipProvider delayDuration={0}>
                       <Tooltip>

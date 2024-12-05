@@ -656,7 +656,7 @@ export default function Component() {
                         }
                         e.target.value = ''
                       }}
-                      accept='image/*,.pdf,.doc,.docx,.txt'
+                      accept='image/*'
                     />
 
                     {uiMode === 'expert' && (

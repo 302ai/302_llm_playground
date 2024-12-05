@@ -103,7 +103,7 @@ export async function chat({
       parts.push(
         ...msg.files.map((file) => ({
           type: file.type,
-          [file.type]: file.url,
+          [file.type === 'image' ? 'image' : 'data']: file.url,
         }))
       )
     }
