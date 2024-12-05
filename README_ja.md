@@ -2,25 +2,35 @@
 
 <p align="center">Next.js 14と最新のWeb技術を使用して構築された、大規模言語モデルを実験するための強力でインタラクティブなプレイグラウンドです。</p>
 
-<p align="center"><a href="https://302.ai/tools/word/" target="blank"><img src="https://file.302ai.cn/gpt/imgs/github/302_badge.png" /></a></p >
+<p align="center"><a href="https://302.ai/ja/apis/" target="blank"><img src="https://file.302ai.cn/gpt/imgs/github/302_badge.png" /></a></p >
 
-<p align="center"><a href="README zh.md">中文</a> | <a href="README.md">English</a> | <a href="README_ja.md">日本語</a></p>
+<p align="center"><a href="README_zh.md">中文</a> | <a href="README.md">English</a> | <a href="README_ja.md">日本語</a></p>
 
 ![界面预览](docs/302-LLM-游乐场jp.png)
 
+
+## インタフェースプレビュー
+ユーザ入力に基づいて結果を生成し、Latexエクスプレッションレンダリングをサポートします。
+![エキスパートモード機能](docs/LLM日1.png)    
+
+コンテキストとして画像をアップロードして会話することができます。
+![エキスパートモード機能](docs/LLM日2.png)    
+
+を使用してインポートしたストロークVSラム速度のデータ点を示します。
+![エキスパートモード機能](docs/LLM日3.png)
 
 ## ✨ 主な機能 ✨
 
 1. **インタラクティブチャットインターフェース**
    - リアルタイムのMarkdown編集とプレビュー
    - 役割ベースの会話
+   - ユーザーは会話のために画像をアップロードすることができます。
    - 高度なメッセージ操作：並べ替え、コピー、再生成
    - エキスパートモード：強化された編集と役割制御
    - シームレスなUXのためのフィードバックとアニメーション
    - モデル設定とAIパラメータ調整
    - レスポンシブでアクセス可能なデザイン
 
-   ![エキスパートモード機能](docs/expert_mode_features.png)
 
 2. **リッチテキストエディタ**
    - GitHub Flavoredの高度なMarkdownサポート
@@ -28,10 +38,6 @@
    - Mermaidによる図のレンダリング
    - 永続的なコンテンツとライブレンダリング
 
-   ![数式レンダリング](docs/formula_rendering.png)
-   ![コードハイライト](docs/code_highlighting.png)
-   ![Mermaid 図](docs/mermaid_diagrams.png)
-   ![複雑なテーブル](docs/complex_tables.png)
 
 3. **モダンなユーザーエクスペリエンス**
    - カスタマイズ可能でレスポンシブなUI
@@ -84,7 +90,7 @@ src/
 1. リポジトリをクローン：
    ```bash
    git clone https://github.com/302ai/302_llm_playground
-   cd 302_LLM_playground
+   cd 302_llm_playground
 
    ```
    
@@ -123,8 +129,8 @@ pnpm start
 Dockerを使用してビルドと実行：
 
 ```bash
-docker build -t llm-playground .
-docker run -p 3000:3000 llm-playground
+docker build -t llm_playground .
+docker run -p 3000:3000 llm_playground
 ```
 
 ## 貢献 🤝

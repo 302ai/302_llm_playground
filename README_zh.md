@@ -2,35 +2,41 @@
 
 <p align="center">一个强大且互动的实验平台，用于实验大型语言模型，基于 Next.js 14 和现代 Web 技术构建。</p>
 
-<p align="center"><a href="https://302.ai/tools/word/" target="blank"><img src="https://file.302ai.cn/gpt/imgs/github/302_badge.png" /></a></p >
+<p align="center"><a href="https://302.ai/apis/" target="blank"><img src="https://file.302ai.cn/gpt/imgs/github/302_badge.png" /></a></p >
 
-<p align="center"><a href="README zh.md">中文</a> | <a href="README.md">English</a> | <a href="README_ja.md">日本語</a></p>
+<p align="center"><a href="README_zh.md">中文</a> | <a href="README.md">English</a> | <a href="README_ja.md">日本語</a></p>
 
 ![界面预览](docs/302-LLM-游乐场.png) 
 
+## 界面预览
+   根据用户输入生成结果，支持Latex表达式渲染。
+   ![](docs/LLM1.png)     
+
+   可上传图片作为上下文进行对话。
+   ![](docs/LLM2.png)     
+
+   支持图表渲染。
+   ![](docs/LLM3.png)
+   
 ## ✨ 主要功能 ✨
 
 1. **互动聊天界面**
    - 实时 Markdown 编辑和预览
    - 基于角色的对话
+   - 用户可上传图片用于对话
    - 高级消息操作：重新排序、复制、重新生成
    - 专家模式：增强的编辑和角色控制
    - 无缝用户体验的反馈和动画
    - 模型配置和 AI 参数调整
    - 响应式和可访问的设计
 
-   ![专家模式功能](docs/expert_mode_features.png)
 
-2. **富文本编辑器**
+2. **丰富文本编辑器**
    - 支持 GitHub 风格的高级 Markdown
    - 支持 LaTeX 表达式的 KaTeX
    - 支持 Mermaid 图表渲染
    - 持久化内容和实时渲染
 
-   ![公式渲染](docs/formula_rendering.png)
-   ![代码高亮](docs/code_highlighting.png)
-   ![Mermaid 图表](docs/mermaid_diagrams.png)
-   ![复杂表格](docs/complex_tables.png)
 
 3. **现代用户体验**
    - 可定制和响应式的 UI
@@ -83,7 +89,7 @@ src/
 1. 克隆仓库：
    ```bash
    git clone https://github.com/302ai/302_llm_playground
-   cd 302_LLM_playground
+   cd 302_llm_playground
    ```
    
 2. 安装依赖：
@@ -121,8 +127,8 @@ pnpm start
 使用 Docker 构建和运行：
 
 ```bash
-docker build -t llm-playground .
-docker run -p 3000:3000 llm-playground
+docker build -t llm_playground .
+docker run -p 3000:3000 llm_playground
 ```
 
 ## 贡献 🤝
