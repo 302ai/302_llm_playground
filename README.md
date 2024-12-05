@@ -91,7 +91,7 @@ src/
 1. Clone the repository:
    ```bash
    git clone https://github.com/302ai/302_llm_playground
-   cd 302_LLM_playground
+   cd 302_llm_playground
    ```
    
 2. Install dependencies:
@@ -129,7 +129,7 @@ pnpm start
 Build and run using Docker:
 
 ```bash
-docker build -t llm-playground .
+docker build -t 302_llm_playground .
 docker run -p 3000:3000 llm-playground
 ```
 
