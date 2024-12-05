@@ -90,7 +90,7 @@ src/
 1. リポジトリをクローン：
    ```bash
    git clone https://github.com/302ai/302_llm_playground
-   cd 302_LLM_playground
+   cd 302_llm_playground
 
    ```
    
@@ -129,7 +129,7 @@ pnpm start
 Dockerを使用してビルドと実行：
 
 ```bash
-docker build -t llm-playground .
+docker build -t 302_llm_playground .
 docker run -p 3000:3000 llm-playground
 ```
 
