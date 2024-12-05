@@ -8,18 +8,28 @@
 
 ![界面预览](docs/302-LLM-游乐场.png) 
 
+## 界面预览
+
+
+
+   ![专家模式功能](docs/expert_mode_features.png)
+   ![公式渲染](docs/formula_rendering.png)
+   ![代码高亮](docs/code_highlighting.png)
+   ![Mermaid 图表](docs/mermaid_diagrams.png)
+   ![复杂表格](docs/complex_tables.png)
+   
 ## ✨ 主要功能 ✨
 
 1. **互动聊天界面**
    - 实时 Markdown 编辑和预览
    - 基于角色的对话
+   - 用户可上传图片、文档等文件用于对话
    - 高级消息操作：重新排序、复制、重新生成
    - 专家模式：增强的编辑和角色控制
    - 无缝用户体验的反馈和动画
    - 模型配置和 AI 参数调整
    - 响应式和可访问的设计
 
-   ![专家模式功能](docs/expert_mode_features.png)
 
 2. **丰富文本编辑器**
    - 支持 GitHub 风格的高级 Markdown
@@ -27,10 +37,6 @@
    - 支持 Mermaid 图表渲染
    - 持久化内容和实时渲染
 
-   ![公式渲染](docs/formula_rendering.png)
-   ![代码高亮](docs/code_highlighting.png)
-   ![Mermaid 图表](docs/mermaid_diagrams.png)
-   ![复杂表格](docs/complex_tables.png)
 
 3. **现代用户体验**
    - 可定制和响应式的 UI
