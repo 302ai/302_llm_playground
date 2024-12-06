@@ -11,6 +11,9 @@ importers:
       '@ai-sdk/openai':
         specifier: ^1.0.1
         version: 1.0.1(zod@3.23.8)
+      '@ai-sdk/provider':
+        specifier: ^1.0.1
+        version: 1.0.1
       '@dnd-kit/core':
         specifier: ^6.1.0
         version: 6.1.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -221,6 +224,10 @@ packages:
 
   '@ai-sdk/provider@1.0.0':
     resolution: {integrity: sha512-Sj29AzooJ7SYvhPd+AAWt/E7j63E9+AzRnoMHUaJPRYzOd/WDrVNxxv85prF9gDcQ7XPVlSk9j6oAZV9/DXYpA==}
+    engines: {node: '>=18'}
+
+  '@ai-sdk/provider@1.0.1':
+    resolution: {integrity: sha512-mV+3iNDkzUsZ0pR2jG0sVzU6xtQY5DtSCBy3JFycLp6PwjyLw/iodfL3MwdmMCRJWgs3dadcHejRnMvF9nGTBg==}
     engines: {node: '>=18'}
 
   '@ai-sdk/react@1.0.0':
@@ -3578,6 +3585,10 @@ snapshots:
       zod: 3.23.8
 
   '@ai-sdk/provider@1.0.0':
+    dependencies:
+      json-schema: 0.4.0
+
+  '@ai-sdk/provider@1.0.1':
     dependencies:
       json-schema: 0.4.0
 

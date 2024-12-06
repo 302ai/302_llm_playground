@@ -11,6 +11,7 @@ import { PlaygroundMessage } from '@/stores/playground'
 import { normalizeUrl } from '@/utils/api'
 import { logger } from '@/utils/logger'
 import { createOpenAI } from '@ai-sdk/openai'
+import { LanguageModelV1LogProbs } from '@ai-sdk/provider'
 import { CoreMessage, streamText } from 'ai'
 import { createStreamableValue } from 'ai/rsc'
 import ky from 'ky'
@@ -129,7 +130,11 @@ export async function chat({
   })
 
   // Create a streamable value for real-time updates
-  const stream = createStreamableValue('')
+  const stream = createStreamableValue<{
+    type: string
+    textDelta?: string
+    logprobs?: LanguageModelV1LogProbs
+  }>({ type: 'text-delta', textDelta: '' })
   try {
     // Initialize OpenAI client with custom base URL
     const openai = createOpenAI({
@@ -192,15 +197,16 @@ export async function chat({
     ;(async () => {
       try {
         logger.debug('Initiating stream text request', { module: 'Chat' })
-        const { textStream } = await streamText({
+        const { fullStream } = await streamText({
           maxRetries: 0,
-          model: openai(model),
+          model: openai(model, { logprobs: 5 }),
           messages: formattedMessages as CoreMessage[],
           frequencyPenalty,
           presencePenalty,
           temperature,
           topP,
           maxTokens,
+
           // Special configuration for Claude 3.5 model
           ...(model.includes('claude-3-5') && {
             maxTokens: maxTokens || MAX_TOKENS,
@@ -210,9 +216,14 @@ export async function chat({
           }),
         })
 
-        // 处理流数据
-        for await (const chunk of textStream) {
-          stream.update(chunk)
+        // Process stream data
+        for await (const chunk of fullStream) {
+          if (chunk.type === 'text-delta') {
+            stream.update({ type: 'text-delta', textDelta: chunk.textDelta })
+          } else if (chunk.type === 'finish') {
+            console.log('Logprobs:', JSON.stringify(chunk.logprobs, null, 2))
+            stream.update({ type: 'logprobs', logprobs: chunk.logprobs })
+          }
         }
 
         logger.info('Chat stream completed successfully', { module: 'Chat' })

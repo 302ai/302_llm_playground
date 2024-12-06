@@ -81,7 +81,7 @@ import {
   RotateCcw,
   Square,
   Trash2,
-  Upload
+  Upload,
 } from 'lucide-react'
 import { marked, Tokens } from 'marked'
 import { useTranslations } from 'next-intl'
@@ -154,7 +154,7 @@ export default function Component() {
       ...(uiMode === 'expert'
         ? { role: message.role as PlaygroundMessage['role'] }
         : { role: 'user' as PlaygroundMessage['role'] }),
-        files: message.role === 'user' ? message.files : undefined,
+      files: message.role === 'user' ? message.files : undefined,
     }
 
     await messageStore.addMessage(newMsg)
@@ -253,11 +253,12 @@ export default function Component() {
 
     const result = await generate(_messages, settings)
     if (result) {
-      const { id, content } = result
+      const { id, content, logprobs } = result
       await messageStore.addMessage({
         id,
         role: 'assistant',
         content,
+        logprobs: logprobs,
       })
     }
   }
@@ -350,7 +351,7 @@ export default function Component() {
   const router = useRouter()
   const params = useParams()
   const pathname = '/'
-  
+
   const { upload, isUploading } = useFileUpload()
 
   const handleFileUpload = useCallback(
@@ -765,9 +766,30 @@ export default function Component() {
                 <SidebarGroupContent className='space-y-8'>
                   <div className='space-y-6'>
                     <div>
-                      <Label className='text-sm font-medium text-gray-700'>
-                        {t('settings.model')}
-                      </Label>
+                      <div className='flex items-center gap-1'>
+                        <Label className='text-sm font-medium text-gray-700'>
+                          {t('settings.model')}
+                        </Label>
+                        <TooltipProvider delayDuration={0}>
+                          <Tooltip>
+                            <TooltipTrigger asChild>
+                              <button
+                                type='button'
+                                className='cursor-help'
+                                onClick={(e) => e.preventDefault()}
+                              >
+                                <HelpCircle className='h-4 w-4 text-gray-400 hover:text-gray-500' />
+                              </button>
+                            </TooltipTrigger>
+                            <TooltipContent
+                              sideOffset={4}
+                              className='max-w-xs select-text break-words rounded-md bg-gray-900 px-3 py-2 text-sm text-gray-50'
+                            >
+                              <p>{t('settings.modelDesc')}</p>
+                            </TooltipContent>
+                          </Tooltip>
+                        </TooltipProvider>
+                      </div>
                       <Popover>
                         <PopoverTrigger asChild>
                           <Button

@@ -31,7 +31,7 @@ export class PlaygroundDB extends Dexie {
   constructor() {
     super('PlaygroundDB')
     
-    this.version(1).stores({
+    this.version(2).stores({
       messages: '++id, role, timestamp'
     })
   }

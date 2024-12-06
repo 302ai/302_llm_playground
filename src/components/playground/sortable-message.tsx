@@ -29,6 +29,7 @@ import { useSortable } from '@dnd-kit/sortable'
 import { CSS } from '@dnd-kit/utilities'
 import { useAtom } from 'jotai'
 import {
+  BarChart2,
   Check,
   Copy,
   Edit2,
@@ -45,6 +46,7 @@ import { toast } from 'sonner'
 import { useDebounceCallback } from 'usehooks-ts'
 import { FilePreview } from './file-preview'
 import { MarkdownEditor } from './markdown-editor'
+import { TokenProbabilities } from './token-probabilities'
 
 /**
  * Props interface for the SortableMessage component
@@ -118,6 +120,7 @@ export const SortableMessage = memo(
     const [isFocused, setIsFocused] = useState(false)
     const [isInCard, setIsInCard] = useState(false)
     const [isEditing, setIsEditing] = useState(false)
+    const [showProbabilities, setShowProbabilities] = useState(false)
 
     // Handle array or string content
     const content = Array.isArray(message.content)
@@ -386,6 +389,28 @@ export const SortableMessage = memo(
                 </TooltipContent>
               </Tooltip>
             </TooltipProvider>
+            {message.role === 'assistant' && message.logprobs && (
+              <TooltipProvider delayDuration={0}>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <Button
+                      variant='outline'
+                      size='icon'
+                      className='size-6 p-1'
+                      onClick={() => setShowProbabilities(!showProbabilities)}
+                    >
+                      <BarChart2 className={cn(
+                        'size-4',
+                        showProbabilities && 'text-primary'
+                      )} />
+                    </Button>
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    <p>{t('message.showProbabilities')}</p>
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
+            )}
           </div>
         </div>
         <div className='mt-2 text-sm'>
@@ -393,56 +418,62 @@ export const SortableMessage = memo(
             <LoadingIndicator />
           ) : (
             <div className='flex flex-col flex-1'>
-              <MarkdownEditor
-                content={content}
-                isEditing={isEditing}
-                onChange={handleMessageEdit}
-              />
-              {message.role === 'user' && (
-                <div className='flex items-center gap-2'>
-                  {message.files && (
-                    <FilePreview
-                    files={message.files}
-                    canDelete={isEditing}
-                    onDelete={handleFileDelete}
-                    className="flex-1"
+              {showProbabilities && message.logprobs ? (
+                <TokenProbabilities logprobs={message.logprobs} />
+              ) : (
+                <>
+                  <MarkdownEditor
+                    content={content}
+                    isEditing={isEditing}
+                    onChange={handleMessageEdit}
                   />
-                )}
-                {isEditing && (
-                  <>
-                    <input
-                      ref={fileInputRef}
-                      type="file"
-                      multiple
-                      className="hidden"
-                      onChange={handleFileUpload}
-                      accept="image/*"
-                    />
-                    <TooltipProvider delayDuration={0}>
-                      <Tooltip>
-                        <TooltipTrigger asChild>
-                          <Button
-                            variant="outline"
-                            size="icon"
-                            className="shrink-0"
-                            onClick={() => fileInputRef.current?.click()}
-                            disabled={isUploading}
-                          >
-                            {isUploading ? (
-                              <Loader2 className="h-4 w-4 animate-spin" />
-                            ) : (
-                              <ImagePlus className="h-4 w-4" />
-                            )}
-                          </Button>
-                        </TooltipTrigger>
-                        <TooltipContent>
-                          <p>{t('message.upload_file')}</p>
-                        </TooltipContent>
-                      </Tooltip>
-                    </TooltipProvider>
-                  </>
+                  {message.role === 'user' && (
+                    <div className='flex items-center gap-2'>
+                      {message.files && (
+                        <FilePreview
+                          files={message.files}
+                          canDelete={isEditing}
+                          onDelete={handleFileDelete}
+                          className="flex-1"
+                        />
+                      )}
+                      {isEditing && (
+                        <>
+                          <input
+                            ref={fileInputRef}
+                            type="file"
+                            multiple
+                            className="hidden"
+                            onChange={handleFileUpload}
+                            accept="image/*"
+                          />
+                          <TooltipProvider delayDuration={0}>
+                            <Tooltip>
+                              <TooltipTrigger asChild>
+                                <Button
+                                  variant="outline"
+                                  size="icon"
+                                  className="shrink-0"
+                                  onClick={() => fileInputRef.current?.click()}
+                                  disabled={isUploading}
+                                >
+                                  {isUploading ? (
+                                    <Loader2 className="h-4 w-4 animate-spin" />
+                                  ) : (
+                                    <ImagePlus className="h-4 w-4" />
+                                  )}
+                                </Button>
+                              </TooltipTrigger>
+                              <TooltipContent>
+                                <p>{t('message.upload_file')}</p>
+                              </TooltipContent>
+                            </Tooltip>
+                          </TooltipProvider>
+                        </>
+                      )}
+                    </div>
                   )}
-                </div>
+                </>
               )}
             </div>
           )}

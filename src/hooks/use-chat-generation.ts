@@ -8,6 +8,7 @@
 import { chat } from '@/actions/chat'
 import { PlaygroundMessage } from '@/stores/playground'
 import { logger } from '@/utils/logger'
+import { LanguageModelV1LogProbs } from '@ai-sdk/provider'
 import { readStreamableValue } from 'ai/rsc'
 import { useLocale, useTranslations } from 'next-intl'
 import { useRef, useState } from 'react'
@@ -68,7 +69,7 @@ export function useChatGeneration() {
   // Refs for managing generation flow
   const shouldStopRef = useRef(false)
   const contentRef = useRef('')
-
+  const logprobsRef = useRef<LanguageModelV1LogProbs | undefined>(undefined)
   // Internationalization hooks
   const t = useTranslations('playground')
   const locale = useLocale()
@@ -94,7 +95,7 @@ export function useChatGeneration() {
     const messageId = uuidv4()
     shouldStopRef.current = false
     contentRef.current = ''
-
+    logprobsRef.current = undefined
     logger.info('Starting chat generation', { 
       context: { messageId, messagesCount: messages.length },
       module: 'ChatGeneration'
@@ -132,23 +133,38 @@ export function useChatGeneration() {
         }
 
         // Accumulate content and update state
-        contentRef.current += delta
-        setState((prev) => ({
-          ...prev,
-          generatingMessage: {
-            id: messageId,
-            role: 'assistant',
-            content: contentRef.current,
-            timestamp: Date.now(),
-          },
-        }))
+        if (delta?.type === 'text-delta') {
+          contentRef.current += delta.textDelta
+          setState((prev) => ({
+            ...prev,
+            generatingMessage: {
+              id: messageId,
+              role: 'assistant',
+              content: contentRef.current,
+              timestamp: Date.now(),
+            },
+          }))
+        } else if (delta?.type === 'logprobs') {
+          logprobsRef.current = delta.logprobs
+          setState((prev) => {
+            if (!prev.generatingMessage) return prev;
+            return {
+              ...prev,
+              generatingMessage: {
+                ...prev.generatingMessage,
+                logprobs: delta.logprobs,
+              },
+            };
+          });
+        }
+        
       }
 
       logger.info('Chat generation completed successfully', { 
         context: { messageId },
         module: 'ChatGeneration'
       })
-      return { id: messageId, content: contentRef.current }
+      return { id: messageId, content: contentRef.current, logprobs: logprobsRef.current }
     } catch (error: unknown) {
       logger.error('Error in chat generation', error as Error, { 
         context: { messageId },

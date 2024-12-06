@@ -5,7 +5,8 @@
  * @created 2024-11-20
  */
 
-import { atomWithStorage } from 'jotai/utils'
+import { LanguageModelV1LogProbs } from '@ai-sdk/provider';
+import { atomWithStorage } from 'jotai/utils';
 
 /**
  * Atom for managing playground settings with persistent storage.
@@ -52,6 +53,7 @@ export const playgroundSettiongsAtom = atomWithStorage('playground-settings', {
  * @property {'image' | 'file'} files[].type - File or image type
  * @property {string} files[].name - File or image name
  * @property {number} files[].size - File or image size
+ * @property {LanguageModelV1LogProbs} [logprobs] - Optional logprobs
  */
 export type PlaygroundMessage = {
   id: string
@@ -64,6 +66,7 @@ export type PlaygroundMessage = {
     name: string
     size: number
   }[]
+  logprobs?: LanguageModelV1LogProbs
 }
 
 /**
