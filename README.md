@@ -18,7 +18,10 @@
    ![Expert Mode Features](docs/LLM英2.png)    
 
    Support chart rendering.
-   ![Expert Mode Features](docs/LLM英3.png)
+   ![Expert Mode Features](docs/LLM英3.png)    
+
+   The OpenAI model has the function of displaying token probabilities. It can obtain the probability of the currently selected token and provide multiple alternative tokens as well as their probabilities.
+   ![Expert Mode Features](docs/LLM英4.jpg)
 
 
 ## ✨ Key Features ✨
@@ -27,6 +30,7 @@
    - Real-time markdown editing and preview
    - Role-based conversations
    - Users can upload images for conversation.
+   - Under the OpenAI model, token probabilities can be displayed.
    - Advanced message manipulation: reorder, copy, regenerate
    - Expert Mode: enhanced editing and role controls
    - Feedback and animations for seamless UX
