@@ -169,11 +169,12 @@ export const MessageList = memo(function MessageList({
       const result = await generate(messageHistory, settings)
 
       if (result) {
-        const { id, content } = result
+        const { id, content, logprobs } = result
         await messageStore.addMessage({
           id,
           role: 'assistant',
           content,
+          logprobs,
         })
       }
     },

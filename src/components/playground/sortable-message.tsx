@@ -366,6 +366,28 @@ export const SortableMessage = memo(
                 </TooltipContent>
               </Tooltip>
             </TooltipProvider>
+            {message.role === 'assistant' && message.logprobs && (
+              <TooltipProvider delayDuration={0}>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <Button
+                      variant='outline'
+                      size='icon'
+                      className='size-6 p-1'
+                      onClick={() => setShowProbabilities(!showProbabilities)}
+                    >
+                      <BarChart2 className={cn(
+                        'size-4',
+                        showProbabilities && 'text-primary'
+                      )} />
+                    </Button>
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    <p>{t('message.showProbabilities')}</p>
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
+            )}
             <TooltipProvider delayDuration={0}>
               <Tooltip>
                 <TooltipTrigger asChild>
@@ -389,28 +411,6 @@ export const SortableMessage = memo(
                 </TooltipContent>
               </Tooltip>
             </TooltipProvider>
-            {message.role === 'assistant' && message.logprobs && (
-              <TooltipProvider delayDuration={0}>
-                <Tooltip>
-                  <TooltipTrigger asChild>
-                    <Button
-                      variant='outline'
-                      size='icon'
-                      className='size-6 p-1'
-                      onClick={() => setShowProbabilities(!showProbabilities)}
-                    >
-                      <BarChart2 className={cn(
-                        'size-4',
-                        showProbabilities && 'text-primary'
-                      )} />
-                    </Button>
-                  </TooltipTrigger>
-                  <TooltipContent>
-                    <p>{t('message.showProbabilities')}</p>
-                  </TooltipContent>
-                </Tooltip>
-              </TooltipProvider>
-            )}
           </div>
         </div>
         <div className='mt-2 text-sm'>
